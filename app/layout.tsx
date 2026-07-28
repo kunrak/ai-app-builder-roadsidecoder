@@ -1,7 +1,11 @@
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
 import type { Metadata } from "next";
 import { DM_Sans, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/Header";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -27,8 +31,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${lora.variable} ${dmSans.variable} font-sans`}>{children}</body>
-    </html>
+    <ClerkProvider appearance={{ theme: shadcn }}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${lora.variable} ${dmSans.variable} font-sans`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <main>{children}</main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
