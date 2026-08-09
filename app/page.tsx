@@ -10,7 +10,7 @@ import { BlueTitle, GrayTitle } from "@/components/reusables";
 import { cn } from "@/lib/utils";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { PLACEHOLDERS } from "@/lib/data";
+import { PLACEHOLDERS, SUGGESTIONS } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
 
 export default function Home() {
@@ -48,6 +48,12 @@ export default function Home() {
       e.preventDefault();
       handleSubmit();
     }
+  };
+
+  const handleSuggestion = (s: string) => {
+    console.log(s);
+    setPrompt(s);
+    textareaRef.current?.focus();
   };
 
   return (
@@ -106,15 +112,18 @@ export default function Home() {
                 Press ⏎ to generate · Shift+⏎ for new line
               </span>
               {isSignedIn ? (
-                <Button>Generate</Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!prompt.trim()}
+                  className="h-8 rounded-full bg-white text-black px-5 font-semibold"
+                  variant={prompt.trim() ? "default" : "secondary"}
+                >
+                  Generate
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
               ) : (
                 <SignInButton mode="modal">
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={!prompt.trim()}
-                    className="h-8 rounded-full bg-white text-black px-5 font-semibold"
-                    variant={prompt.trim() ? "default" : "secondary"}
-                  >
+                  <Button className="h-8 rounded-full bg-white text-black px-5 font-semibold">
                     Generate
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Button>
@@ -122,7 +131,23 @@ export default function Home() {
               )}
             </div>
           </div>
+
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s}
+                onClick={() => handleSuggestion(s)}
+                className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-white/40 hover:border-white/15 hover:bg-white/8 hover:text-white/70"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
+
+        <p className="mt-10 text-center text-white/40 text-xs">
+          No credit card required · 10 free generations on sign up{" "}
+        </p>
       </section>
     </main>
   );
