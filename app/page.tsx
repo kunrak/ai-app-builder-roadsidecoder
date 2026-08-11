@@ -12,7 +12,7 @@ import {
   SectionLabel,
 } from "@/components/reusables";
 import { cn } from "@/lib/utils";
-import { SignInButton, useAuth } from "@clerk/nextjs";
+import { PricingTable, SignInButton, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { FEATURES, PLACEHOLDERS, STEPS, SUGGESTIONS } from "@/lib/data";
 import { ArrowRight, ChevronRight } from "lucide-react";
@@ -229,7 +229,19 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-3"></div>
+        <div className="mx-auto max-w-5xl">
+          <PricingTable 
+            checkoutProps={{
+              appearance: {
+                elements: {
+                  drawerRoot: {
+                    zIndex: 2000,
+                  }
+                }
+              }
+            }}
+          />
+        </div>
       </section>
 
       <section className="relative mx-auto mb-32 max-x-5xl overflow-hidden rounded-2xl-border border-white/8 px-10 py-24 text-center">
