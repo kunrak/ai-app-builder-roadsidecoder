@@ -21,6 +21,7 @@ async function Header() {
             width={100}
             height={100}
             className="h-9 w-auto rounded-md"
+            suppressHydrationWarning
           ></Image>
         </Link>
 
